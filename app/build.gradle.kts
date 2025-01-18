@@ -9,15 +9,18 @@ plugins {
 }
 
 detekt {
-    config.from("$rootDir/config/detekt/detekt.yml")
-    allRules = false // 모든 규칙을 실행하지 않고 필요한 것만 사용
+//    config.from("$rootDir/config/detekt/detekt.yml")
+    reports {
+        xml.required.set(true)  // XML 형식의 보고서 생성
+        html.required.set(true) // HTML 형식의 보고서 생성
+        txt.required.set(false)
+    }
 }
 
 spotless {
     kotlin {
         target("**/*.kt") // 대상 파일
         ktlint("0.48.2") // Ktlint 버전
-        licenseHeader("/* License Header */") // 라이선스 헤더 추가 (옵션)
     }
 }
 

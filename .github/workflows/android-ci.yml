@@ -9,23 +9,23 @@ on:
       - main
 
 jobs:
-  check:
-    name: Static Code Analysis
+  build:
+    name: Build and Test
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 코드 체크아웃
+      # 1. Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. JDK 설정
+      # 2. Set up JDK
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          java-version: 17
+          distribution: temurin
 
-      # 3. Gradle 캐싱 (빌드 시간 단축)
+      # 3. Cache Gradle
       - name: Cache Gradle
         uses: actions/cache@v3
         with:
@@ -34,10 +34,22 @@ jobs:
           restore-keys: |
             gradle-
 
-      # 4. Detekt 실행
+      # 4. Run Static Analysis (Detekt)
       - name: Run Detekt
         run: ./gradlew detekt
 
-      # 5. Spotless 검사
+      # 5. Check Code Formatting (Spotless)
       - name: Run Spotless Check
         run: ./gradlew spotlessCheck
+
+      # 6. Run Tests
+      - name: Run Unit Tests
+        run: ./gradlew test
+
+      # 7. Optional: Lint (for Android projects)
+      - name: Run Android Lint
+        run: ./gradlew lint
+
+      # 8. Optional: Build APK
+      - name: Build APK
+        run: ./gradlew assembleDebug
