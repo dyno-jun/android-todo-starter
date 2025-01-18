@@ -68,9 +68,9 @@ jobs:
       # 9. Upload File to Slack
       - name: Upload APK to Slack
         run: |
-          curl -X PUT $UPLOAD_URL \
+          curl -X POST $UPLOAD_URL \
           -H "Content-Type: application/octet-stream" \
-          --upload-file app/build/outputs/apk/debug/app-debug.apk
+          --data-binary @app/build/outputs/apk/debug/app-debug.apk
 
       # 10. Finalize File and Share
       - name: Finalize and Share File on Slack
