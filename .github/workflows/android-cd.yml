@@ -43,18 +43,9 @@ jobs:
       - name: Build APK
         run: ./gradlew assembleDebug
 
-
-      # 8. Upload APK to Slack
-      - name: Upload APK to Slack
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        run: |
-          UPLOAD_RESPONSE=$(curl -s -X POST \
-          -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
-          -F "channels=#deploy" \
-          -F "file=@app/build/outputs/apk/debug/app-debug.apk" \
-          -F "filename=app-release.apk" \
-          -F "initial_comment=New APK build available for ${{ github.ref_name }}" \
-          https://slack.com/api/files.upload)
-          
-          echo "Response from Slack: $UPLOAD_RESPONSE"
+      - name: Upload to slack step
+        uses: adrey/slack-file-upload-action@master
+        with:
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          path: @app/build/outputs/apk/debug/app-debug.apk
+          channel: deploy
