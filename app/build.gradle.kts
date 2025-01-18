@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("io.gitlab.arturbosch.detekt")
     id("com.diffplug.spotless") version "6.21.0"
+    id("com.google.dagger.hilt.android") // Hilt
+    kotlin("kapt") // For annotation processing
 }
 
 detekt {
@@ -55,7 +57,29 @@ android {
 }
 
 dependencies {
+    // detekt
     detektPlugins(libs.detekt.formatting) // 포맷팅 검사 추가
+
+    // Hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
+    // Ktor
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.serialization)
+    implementation(libs.ktor.client.json)
+
+    // Coroutines
+    implementation(libs.kotlinx.coroutines.android)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
+    // Paging
+    implementation("androidx.paging:paging-runtime:3.3.5")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
