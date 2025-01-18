@@ -1,6 +1,6 @@
-package com.dyno.android_todo_starter.ui.theme
+/* License Header */
+package com.dyno.androidtodostarter.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

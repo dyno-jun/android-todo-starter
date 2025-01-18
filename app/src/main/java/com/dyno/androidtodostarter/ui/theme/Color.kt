@@ -1,4 +1,5 @@
-package com.dyno.android_todo_starter.ui.theme
+/* License Header */
+package com.dyno.androidtodostarter.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

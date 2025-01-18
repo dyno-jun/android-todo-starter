@@ -1,0 +1,14 @@
+build:
+  maxIssues: 10
+  weights:
+    complexity: 2
+    longParameterList: 1
+    style: 1
+
+style:
+  MagicNumber:
+    active: true
+    ignoreHashCodeFunction: true
+  MaxLineLength:
+    active: true
+    maxLineLength: 120

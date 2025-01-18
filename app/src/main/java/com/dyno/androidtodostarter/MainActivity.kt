@@ -1,4 +1,5 @@
-package com.dyno.android_todo_starter
+/* License Header */
+package com.dyno.androidtodostarter
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,7 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.dyno.android_todo_starter.ui.theme.AndroidtodostarterTheme
+import com.dyno.androidtodostarter.ui.theme.AndroidtodostarterTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -2,6 +2,21 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("io.gitlab.arturbosch.detekt")
+    id("com.diffplug.spotless") version "6.21.0"
+}
+
+detekt {
+    config.from("$rootDir/config/detekt/detekt.yml")
+    allRules = false // 모든 규칙을 실행하지 않고 필요한 것만 사용
+}
+
+spotless {
+    kotlin {
+        target("**/*.kt") // 대상 파일
+        ktlint("0.48.2") // Ktlint 버전
+        licenseHeader("/* License Header */") // 라이선스 헤더 추가 (옵션)
+    }
 }
 
 android {
@@ -40,6 +55,7 @@ android {
 }
 
 dependencies {
+    detektPlugins(libs.detekt.formatting) // 포맷팅 검사 추가
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
