@@ -51,4 +51,4 @@ jobs:
             [
               {"file": "app/build/outputs/apk/debug/app-debug.apk", "filename": "app-debug.apk"}
             ]
-          channel_id: deploy
+          channel_id: C07CF2Z8N83
