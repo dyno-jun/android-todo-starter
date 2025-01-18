@@ -53,10 +53,13 @@ jobs:
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         run: |
+          FILE_PATH=app/build/outputs/apk/debug/app-debug.apk
+          FILE_SIZE=$(stat --format="%s" $FILE_PATH)  # Get file size in bytes
+          
           UPLOAD_RESPONSE=$(curl -s -X POST https://slack.com/api/files.getUploadURLExternal \
             -H "Authorization: Bearer $SLACK_BOT_TOKEN" \
             -H "Content-Type: application/json" \
-            -d '{"filename":"app-debug.apk"}')
+            -d "{\"filename\":\"app-debug.apk\",\"length\":$FILE_SIZE}")
 
           echo "UPLOAD_RESPONSE=$UPLOAD_RESPONSE" >> $GITHUB_ENV
           echo "UPLOAD_URL=$(echo $UPLOAD_RESPONSE | jq -r '.upload_url')" >> $GITHUB_ENV
