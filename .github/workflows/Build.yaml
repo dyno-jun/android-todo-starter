@@ -99,11 +99,5 @@ jobs:
           webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
           webhook-type: webhook-trigger
           payload: |
-            {
-              "status": "${{ job.status }}",
-              "branch": "${{ github.ref_name }}",
-              "workflow": "${{ github.workflow }}",
-              "job_name": "${{ github.job }}",
-              "run_url": "${{ github.run_url }}",
-              "message": "Build status: ${{ job.status }} for branch ${{ github.ref_name }}"
-            }
+            status: "${{ job.status }}"
+            option: "false"
