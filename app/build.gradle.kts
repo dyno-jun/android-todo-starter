@@ -6,15 +6,40 @@ plugins {
     id("com.diffplug.spotless") version "6.21.0"
     id("com.google.dagger.hilt.android") // Hilt
     kotlin("kapt") // For annotation processing
+    id("com.dropbox.dependency-guard") version "0.5.0"
+    id("jacoco")
+}
+
+android {
+    // Your existing configuration
+}
+
+tasks.register<JacocoReport>("createDebugCoverageReport") {
+    dependsOn("testDebugUnitTest") // Ensure unit tests are run first
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+
+    val fileFilter = listOf("**/R.class", "**/R$*.class", "**/BuildConfig.*", "**/Manifest*.*")
+    val debugTree = fileTree("${buildDir}/intermediates/javac/debug") {
+        exclude(fileFilter)
+    }
+
+    sourceDirectories.setFrom(files(listOf("src/main/java")))
+    classDirectories.setFrom(files(debugTree))
+    executionData.setFrom(files("${buildDir}/jacoco/testDebugUnitTest.exec"))
+}
+
+dependencyGuard {
+    configuration("debugRuntimeClasspath")
+    configuration("releaseRuntimeClasspath")
+
 }
 
 detekt {
 //    config.from("$rootDir/config/detekt/detekt.yml")
-    reports {
-        xml.required.set(true)  // XML 형식의 보고서 생성
-        html.required.set(true) // HTML 형식의 보고서 생성
-        txt.required.set(false)
-    }
 }
 
 spotless {
@@ -34,8 +59,7 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.github.takahirom.roborazzi.RoborazziTestRunner"
     }
 
     buildTypes {
@@ -82,7 +106,7 @@ dependencies {
     implementation(libs.androidx.room.ktx)
 
     // Paging
-    implementation("androidx.paging:paging-runtime:3.3.5")
+    implementation(libs.androidx.paging.runtime.ktx)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -93,10 +117,17 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.core)
+    androidTestImplementation(libs.roborazzi)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+}
+
+tasks.named("spotlessKotlin") {
+    dependsOn("dependencyGuard")
 }

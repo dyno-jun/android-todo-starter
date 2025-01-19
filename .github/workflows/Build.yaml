@@ -8,10 +8,19 @@ on:
     branches:
       - main
 
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Build and Test
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+      security-events: write
 
     steps:
       # 1. Checkout code
@@ -42,14 +51,64 @@ jobs:
       - name: Run Spotless Check
         run: ./gradlew spotlessCheck
 
-      # 6. Run Tests
+      # 6. Check Dependency Guard
+      - name: Check Dependency Guard
+        id: dependencyguard_verify
+        continue-on-error: true
+        run: ./gradlew dependencyGuard
+
+
+      # 8. Run Unit Tests
       - name: Run Unit Tests
         run: ./gradlew test
 
-      # 7. Optional: Lint (for Android projects)
-      - name: Run Android Lint
+      # 9. Run Lint
+      - name: Run Lint
         run: ./gradlew lint
 
-      # 8. Optional: Build APK
+      # 10. Build APK
       - name: Build APK
         run: ./gradlew assembleDebug
+
+      # 11. Generate Coverage Report
+      - name: Generate Coverage Report
+        run: ./gradlew createDebugCoverageReport
+
+      # 12. Upload Artifacts
+      - name: Upload APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: APKs
+          path: '**/build/outputs/apk/**/*.apk'
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test Results
+          path: '**/build/test-results/**/*.xml'
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: Coverage Report
+          path: '**/build/reports/jacoco/**/*.html'
+
+
+      # 13. Notify Slack
+      - name: Notify Slack
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          STATUS="SUCCESS"
+          if [ "${{ job.status }}" != "success" ]; then
+            STATUS="FAILED"
+          fi
+          curl -X POST -H 'Content-type: application/json' --data '{
+            "text": "Android CI Job: *'"$STATUS"'* for '${{ github.workflow }}'.
+            *Job Details*:
+            - *Job Name*: '${{ github.job }}'
+            - *Commit*: '${{ github.sha }}'
+            - *Branch*: '${{ github.ref_name }}'
+            - *Run URL*: '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+          }' $SLACK_WEBHOOK_URL
