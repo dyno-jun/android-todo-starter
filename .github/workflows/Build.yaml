@@ -93,7 +93,7 @@ jobs:
           name: Coverage Report
           path: '**/build/reports/jacoco/**/*.html'
       - name: Slack - Send msg
-        uses: 8398a7/actioin-slack@v3
+        uses: 8398a7/action-slack@v3
         with:
           status: ${{job.status}}
           fields: workflow,job,commit,repo,author,took.ref
