@@ -92,32 +92,12 @@ jobs:
         with:
           name: Coverage Report
           path: '**/build/reports/jacoco/**/*.html'
-
-      - name: Notify Slack with Details
-        run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{
-            "text": "Build Notification",
-            "attachments": [
-              {
-                "color": "#36a64f",
-                "title": "Build Success",
-                "title_link": "${{ github.run_url }}",
-                "fields": [
-                  {
-                    "title": "Branch",
-                    "value": "${{ github.ref_name }}",
-                    "short": true
-                  },
-                  {
-                    "title": "Workflow",
-                    "value": "${{ github.workflow }}",
-                    "short": true
-                  }
-                ],
-                "footer": "GitHub Actions",
-                "ts": '$(date +%s)'
-              }
-            ]
-          }' \
-          ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Slack - Send msg
+        uses: 8398a7/actioin-slack@v3
+        with:
+          status: ${{job.status}}
+          fields: workflow,job,commit,repo,author,took.ref
+          author_name: dyno
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
