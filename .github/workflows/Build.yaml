@@ -92,3 +92,18 @@ jobs:
         with:
           name: Coverage Report
           path: '**/build/reports/jacoco/**/*.html'
+
+      - name: Send custom event details to a Slack workflow
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: webhook-trigger
+          payload: |
+            {
+              "status": "${{ job.status }}",
+              "branch": "${{ github.ref_name }}",
+              "workflow": "${{ github.workflow }}",
+              "job_name": "${{ github.job }}",
+              "run_url": "${{ github.run_url }}",
+              "message": "Build status: ${{ job.status }} for branch ${{ github.ref_name }}"
+            }
