@@ -39,6 +39,13 @@ jobs:
       - name: Accept licenses
         run: yes | sdkmanager --licenses || true
 
+      - name: Get Tag Name and Message
+        id: tag_info
+        run: |
+          echo "TAG_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
+          TAG_MESSAGE=$(git for-each-ref refs/tags/${GITHUB_REF##*/} --format='%(contents)')
+          echo "TAG_MESSAGE=$TAG_MESSAGE" >> $GITHUB_ENV
+
       # 6. Build release APK
       - name: Build APK
         run: ./gradlew assembleDebug
@@ -52,3 +59,6 @@ jobs:
               {"file": "app/build/outputs/apk/debug/app-debug.apk", "filename": "app-debug.apk"}
             ]
           channel_id: C07CF2Z8N83
+          initial_comment: |
+            New release created: ${{ env.TAG_NAME }}
+            Message: ${{ env.TAG_MESSAGE }}
