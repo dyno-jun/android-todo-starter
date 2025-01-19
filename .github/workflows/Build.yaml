@@ -92,23 +92,3 @@ jobs:
         with:
           name: Coverage Report
           path: '**/build/reports/jacoco/**/*.html'
-
-
-      # 13. Notify Slack
-      - name: Notify Slack
-        if: always()
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        run: |
-          STATUS="SUCCESS"
-          if [ "${{ job.status }}" != "success" ]; then
-            STATUS="FAILED"
-          fi
-          curl -X POST -H 'Content-type: application/json' --data '{
-            "text": "Android CI Job: *'"$STATUS"'* for '${{ github.workflow }}'.
-            *Job Details*:
-            - *Job Name*: '${{ github.job }}'
-            - *Commit*: '${{ github.sha }}'
-            - *Branch*: '${{ github.ref_name }}'
-            - *Run URL*: '${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
-          }' $SLACK_WEBHOOK_URL
