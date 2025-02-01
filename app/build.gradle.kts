@@ -84,6 +84,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.google.gson)
+
+    implementation(libs.androidx.navigation.runtime.ktx)
     // detekt
     detektPlugins(libs.detekt.formatting) // 포맷팅 검사 추가
 
