@@ -11,14 +11,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
-import com.dyno.androidtodostarter.ui.webview.WebViewState.Content
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.dyno.androidtodostarter.ui.webview.WebViewState.Error
 import com.dyno.androidtodostarter.ui.webview.WebViewState.Loading
 import com.dyno.androidtodostarter.ui.webview.bridge.WebViewBridge
 import com.dyno.androidtodostarter.ui.webview.bridge.WebViewCaller
 
 @Composable
-fun WebViewScreen(viewModel: WebViewViewModel) {
+fun WebViewScreen(viewModel: WebViewViewModel = hiltViewModel()) {
     val url = "file:///android_asset/index.html" // URL
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -48,7 +48,7 @@ fun CustomWebView(
     LaunchedEffect(viewModel.webViewState) {
         viewModel.webViewState.collect { state ->
             when (state) {
-                is Content -> webViewBridge.onSuccess(state.data)
+                is WebViewState.Success -> webViewBridge.onSuccess(state.todos)
                 is Error -> Log.e("WebView", state.message)
                 Loading -> Log.d("WebView", "Loading...")
                 else -> {}

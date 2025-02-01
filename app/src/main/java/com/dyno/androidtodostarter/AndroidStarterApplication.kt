@@ -1,4 +1,3 @@
-/* License Header */
 package com.dyno.androidtodostarter
 
 import android.app.Application

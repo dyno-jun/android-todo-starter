@@ -94,6 +94,9 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
 
+    // Hilt + Jetpack Compose 통합
+    implementation(libs.androidx.hilt.navigation.compose)
+
     // Ktor
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.logging)
