@@ -36,7 +36,7 @@ class WebViewBridge(
 
     fun onSuccess(data: Any) {
         val jsonData = gson.toJson(WebViewResponse(data)) // Any 타입을 JSON 문자열로 변환
-        val jsCode = "javascript:response($jsonData)"
+        val jsCode = "javascript:onSuccess($jsonData)"
         webView.loadUrl(jsCode)
     }
 }
