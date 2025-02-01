@@ -1,5 +1,5 @@
 package com.dyno.androidtodostarter.ui.webview
 
 sealed class WebViewIntent {
-    data object FetchData : WebViewIntent()
+    data class FetchData(val request: String) : WebViewIntent()
 }

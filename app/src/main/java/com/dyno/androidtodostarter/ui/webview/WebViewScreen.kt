@@ -11,7 +11,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
-import com.dyno.androidtodostarter.ui.webview.WebViewState.*
+import com.dyno.androidtodostarter.ui.webview.WebViewState.Content
+import com.dyno.androidtodostarter.ui.webview.WebViewState.Error
+import com.dyno.androidtodostarter.ui.webview.WebViewState.Loading
 import com.dyno.androidtodostarter.ui.webview.bridge.WebViewBridge
 import com.dyno.androidtodostarter.ui.webview.bridge.WebViewCaller
 
@@ -48,7 +50,7 @@ fun CustomWebView(
     LaunchedEffect(viewModel.webViewState) {
         viewModel.webViewState.collect { state ->
             when (state) {
-                is Content -> webViewBridge.sendDataToWebView(state.data)
+                is Content -> webViewBridge.onSuccess(state.data)
                 is Error -> Log.e("WebView", state.message)
                 Loading -> Log.d("WebView", "Loading...")
                 else -> {}
