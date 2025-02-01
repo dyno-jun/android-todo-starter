@@ -87,6 +87,7 @@ dependencies {
     implementation(libs.google.gson)
 
     implementation(libs.androidx.navigation.runtime.ktx)
+    testImplementation(libs.junit.jupiter)
     // detekt
     detektPlugins(libs.detekt.formatting) // 포맷팅 검사 추가
 
@@ -130,6 +131,11 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.google.gson)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

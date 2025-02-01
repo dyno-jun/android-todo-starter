@@ -23,11 +23,11 @@ class WebViewBridge(
             val request = gson.fromJson(body, TodoRequest::class.java)
             callback(WebViewIntent.FetchData(request.filter))
         } catch (e: Exception) {
-            onError(e.message ?: "Error")
+            onError("Error")
         }
     }
 
-    private fun onError(message: String) {
+    fun onError(message: String) {
         val jsonData = gson.toJson(ErrorResponse(message)) // Any 타입을 JSON 문자열로 변환
         val jsCode = "javascript:onError($jsonData)"
         webView.loadUrl(jsCode)
