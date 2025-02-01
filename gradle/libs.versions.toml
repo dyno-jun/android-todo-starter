@@ -2,6 +2,7 @@
 agp = "8.8.0"
 core = "1.6.1"
 detektFormatting = "1.23.0"
+gsonVersion = "2.10.1"
 hiltAndroid = "2.51.1"
 kotlin = "2.0.0"
 coreKtx = "1.15.0"
@@ -19,6 +20,7 @@ composeBom = "2024.04.01"
 pagingRuntimeKtx = "3.3.5"
 roborazzi = "1.39.0"
 roomRuntime = "2.6.1"
+navigationRuntimeKtx = "2.8.6"
 
 [libraries]
 androidx-core = { module = "androidx.test:core", version.ref = "core" }
@@ -28,6 +30,7 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detektFormatting" }
+google-gson = { module = "com.google.code.gson:gson", version.ref = "gsonVersion" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroid" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -49,6 +52,7 @@ ktor-client-json = { module = "io.ktor:ktor-client-json", version.ref = "ktorCli
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorClientLogging" }
 ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktorClientSerialization" }
 roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
+androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
