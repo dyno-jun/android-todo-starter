@@ -17,7 +17,6 @@ import com.dyno.androidtodostarter.ui.webview.WebViewState.Loading
 import com.dyno.androidtodostarter.ui.webview.bridge.WebViewBridge
 import com.dyno.androidtodostarter.ui.webview.bridge.WebViewCaller
 
-
 @Composable
 fun WebViewScreen(viewModel: WebViewViewModel) {
     val url = "file:///android_asset/index.html" // URL
@@ -31,7 +30,7 @@ fun WebViewScreen(viewModel: WebViewViewModel) {
 @Composable
 fun CustomWebView(
     url: String,
-    viewModel: WebViewViewModel
+    viewModel: WebViewViewModel,
 ) {
     val context = LocalContext.current
     val webView = remember { WebView(context) }
@@ -41,7 +40,6 @@ fun CustomWebView(
             override fun loadUrl(url: String) {
                 webView.loadUrl(url)
             }
-
         }) { intent ->
             viewModel.processIntent(intent)
         }
@@ -58,7 +56,6 @@ fun CustomWebView(
         }
     }
 
-
     AndroidView(
         factory = {
             webView.apply {
@@ -69,7 +66,6 @@ fun CustomWebView(
         },
         update = { webViewInstance ->
             webViewInstance.loadUrl(url)
-        }
+        },
     )
 }
-

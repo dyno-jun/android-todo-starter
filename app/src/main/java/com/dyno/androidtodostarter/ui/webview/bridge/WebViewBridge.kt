@@ -13,7 +13,7 @@ interface WebViewCaller {
 
 class WebViewBridge(
     private val webView: WebViewCaller,
-    private val callback: (WebViewIntent) -> Unit
+    private val callback: (WebViewIntent) -> Unit,
 ) {
     private val gson = Gson()
 
@@ -31,7 +31,6 @@ class WebViewBridge(
         val jsonData = gson.toJson(ErrorResponse(message)) // Any 타입을 JSON 문자열로 변환
         val jsCode = "javascript:onError($jsonData)"
         webView.loadUrl(jsCode)
-
     }
 
     fun onSuccess(data: Any) {
